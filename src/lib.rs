@@ -5,10 +5,18 @@ extern crate gtk_sys;
 
 pub use libappindicator_sys::*;
 use libappindicator_sys::{AppIndicator as AppIndicatorRaw};
+use libappindicator_sys::AppIndicatorStatus::*;
 use glib::translate::{ToGlibPtr};
 
 pub struct AppIndicator {
     air: *mut AppIndicatorRaw
+}
+
+#[repr(u32)]
+pub enum AppIndicatorStatus {
+    Active = APP_INDICATOR_STATUS_ACTIVE,
+    Attention = APP_INDICATOR_STATUS_ATTENTION,
+    Passive = APP_INDICATOR_STATUS_PASSIVE,
 }
 
 impl AppIndicator {
@@ -24,7 +32,7 @@ impl AppIndicator {
 
     pub fn set_status(&mut self, status: AppIndicatorStatus) {
         unsafe {
-            app_indicator_set_status(self.air, status);
+            app_indicator_set_status(self.air, status as u32);
         }
     }
 
